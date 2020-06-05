@@ -15,14 +15,16 @@ export default {
 		return {
 			circlesize:200,
 			wavesize: 150,
+			cuthead:14
 		}
 	},
 	methods:{
 		draw(arr){
 			this.two.clear()
 			var lines = []
+			arr = arr.slice(this.cuthead,arr.length)
 			for(var i=0;i<this.size;i++){
-				var sinwave = Math.pow(arr[i],4) / Math.pow(256,4) * this.wavesize
+				var sinwave = Math.pow(arr[i],5) / Math.pow(256,5) * this.wavesize
 				
 				var x1 = this.center[0] + Math.sin(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
 				var y1 = this.center[1] + Math.cos(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
