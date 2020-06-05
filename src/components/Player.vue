@@ -22,7 +22,7 @@ export default {
 			this.two.clear()
 			var lines = []
 			for(var i=0;i<this.size;i++){
-				var sinwave = Math.pow(arr[i],11) / Math.pow(256,11) * this.wavesize
+				var sinwave = Math.pow(arr[i],4) / Math.pow(256,4) * this.wavesize
 				
 				var x1 = this.center[0] + Math.sin(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
 				var y1 = this.center[1] + Math.cos(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
