@@ -20,5 +20,4 @@ yarn build
 yarn lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+请在public目录下放一个test.mp3来看效果

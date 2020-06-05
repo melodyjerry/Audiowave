@@ -26,7 +26,7 @@ export default {
 			draw:this.$refs.wave.draw
 		});
 		this.mv.changeVolumn(0.6)
-		this.mv.play("Gimme×Gimme.mp3");
+		this.mv.play("test.mp3");
 	}
 }
 </script>
