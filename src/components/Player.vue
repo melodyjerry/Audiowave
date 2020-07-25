@@ -1,5 +1,6 @@
 <template>
-	<div class="wave" ref="wavebody">
+	<div class="wave">
+		<div><canvas class="canwave" ref="wavebody"></canvas></div>
 		
 	</div>
 </template>
@@ -14,7 +15,7 @@ export default {
 	data(){
 		return {
 			circlesize:200,
-			wavesize: 150,
+			wavesize: 66,
 			cuthead:14
 		}
 	},
@@ -23,13 +24,15 @@ export default {
 			this.two.clear()
 			var lines = []
 			arr = arr.slice(this.cuthead,arr.length)
+			var wcenter = this.two.width / 2
+			var hcenter = this.two.height / 2
 			for(var i=0;i<this.size;i++){
 				var sinwave = Math.pow(arr[i],5) / Math.pow(256,5) * this.wavesize
 				
-				var x1 = this.center[0] + Math.sin(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
-				var y1 = this.center[1] + Math.cos(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
-				var x2 = this.center[0] + Math.sin(Math.PI * this.deg*i / 180) * (this.circlesize - sinwave)
-				var y2 = this.center[1] + Math.cos(Math.PI * this.deg*i / 180) * (this.circlesize - sinwave)
+				var x1 = wcenter + Math.sin(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
+				var y1 = hcenter + Math.cos(Math.PI * this.deg*i / 180) * (this.circlesize + sinwave)
+				var x2 = wcenter + Math.sin(Math.PI * this.deg*i / 180) * (this.circlesize - sinwave)
+				var y2 = hcenter + Math.cos(Math.PI * this.deg*i / 180) * (this.circlesize - sinwave)
 				lines.push([x1, y1, x2, y2])
 				var line = this.two.makeLine(x1, y1, x2, y2)
 				line.stroke = 'skyblue'
@@ -57,25 +60,36 @@ export default {
 		}
 	},
 	mounted(){
-		this.two = new Two({autostart: true,width:900,height:900,type:Two.Types.canvas}).appendTo(this.$refs.wavebody)
-		this.center = [this.two.width / 2,this.two.height / 2]
-		
-		
+		var canvas = this.$refs.wavebody
+		this.two = new Two({
+			fullscreen:false,
+			autostart: true,
+			width:800,
+			height:800,
+			type:Two.Types.canvas,
+			domElement: canvas
+			})
 		this.deg = 360/(this.size)
 	}
 }
 </script>
-
-<style scoped>
-.wave{
-	height: 900px;
-	width: 900px;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: auto auto;
-	
-}
+<style lang="scss">
+	.wave{
+		height: 1px;
+		width: 1px;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto auto;
+		.canwave{
+			display: inline-flex;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -400px;
+			margin-top: -400px;
+		}
+	}
 </style>

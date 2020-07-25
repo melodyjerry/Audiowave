@@ -51,11 +51,13 @@ Musicvisualizer.prototype.decode = function(arraybuffer,fun){
 		console.log(err);
 	});
 }
-
-Musicvisualizer.prototype.play = function(path){
+Musicvisualizer.prototype.stop = function(){
+	self.source && self.source[self.source.stop ? "stop":"noteOff"]()
+}
+Musicvisualizer.prototype.play = function(path,offset){
 	var n = ++this.count;
 	var self = this;
-	self.source && self.source[self.source.stop ? "stop":"noteOff"](); // 开始前先暂停之前音频的播放，防止多份音频同时播放
+	self.stop(); // 开始前先暂停之前音频的播放，防止多份音频同时播放
 	if(path instanceof ArrayBuffer){
 		self.decode(path,function(buffer){
 			if(n!=self.count) return;
@@ -64,7 +66,7 @@ Musicvisualizer.prototype.play = function(path){
 			bufferSource.buffer = buffer;
 			bufferSource.loop = true;
 			bufferSource.connect(self.analyser);
-			bufferSource[bufferSource.start?"start":"noteOn"](0);
+			bufferSource[bufferSource.start?"start":"noteOn"](0,offset);
 			self.source = bufferSource;
 		});
 	}
@@ -74,10 +76,12 @@ Musicvisualizer.prototype.play = function(path){
 			self.decode(arraybuffer,function(buffer){
 				if(n!=self.count) return;
 				var bufferSource = Musicvisualizer.ac.createBufferSource();
+				
 				// 将解码成功后的buffer赋值给bufferSource的buffer属性
 				bufferSource.buffer = buffer;
 				bufferSource.connect(self.analyser);
-				bufferSource[bufferSource.start?"start":"noteOn"](0);
+				bufferSource[bufferSource.start?"start":"noteOn"](0,offset);
+				
 				self.source = bufferSource;
 			});
 		});
@@ -99,6 +103,7 @@ Musicvisualizer.prototype.visualize = function(){
 	function fn(){
 		self.analyser.getByteFrequencyData(arr);// 将音频频域数据复制到传入的Uint8Array数组
 		self.draw(arr);
+		
 		requestAnimationFrame(fn);
 	}
 	requestAnimationFrame(fn);
